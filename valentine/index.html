@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .valentine-card {
+            background-color: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            border: 10px solid #ff6b8b;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 20;
+        }
+
+        h1 {
+            color: #ff6b8b;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .heart {
+            color: #ff6b8b;
+            animation: pulse 1.5s infinite;
+            margin: 0 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .message {
+            font-size: 1.4rem;
+            color: #555;
+            line-height: 1.6;
+            margin: 25px 0;
+        }
+
+        .question {
+            font-size: 2rem;
+            color: #ff6b8b;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* ESTILOS PARA LA FOTO */
+        .photo-container {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 8px solid #ff6b8b;
+            box-shadow: 0 10px 25px rgba(255, 107, 139, 0.4);
+            position: relative;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-caption {
+            color: #ff6b8b;
+            font-size: 1.3rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            min-width: 150px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            background: linear-gradient(45deg, #388E3C, #689F38);
+            transform: scale(1.1);
+        }
+
+        .no-btn {
+            background: linear-gradient(45deg, #F44336, #FF9800);
+            color: white;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            background: linear-gradient(45deg, #D32F2F, #F57C00);
+        }
+
+        .response-message {
+            font-size: 2rem;
+            color: #ff6b8b;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 60px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #777;
+            font-size: 1.2rem;
+        }
+
+        /* Corazones flotantes */
+        .floating-heart {
+            position: fixed;
+            font-size: 20px;
+            color: rgba(255, 107, 139, 0.5);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* IMÁGENES EN ZIGZAG */
+        .side-image {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 5px solid #ff6b8b;
+            z-index: 5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            object-fit: cover;
+        }
+
+        .side-image.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .message { font-size: 1.2rem; }
+            .question { font-size: 1.6rem; }
+            .btn { padding: 12px 30px; font-size: 1.3rem; }
+            .photo-container { width: 200px; height: 200px; }
+            .side-image { width: 80px; height: 80px; }
+        }
+
+        @media (max-width: 480px) {
+            .side-image { width: 60px; height: 60px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="valentine-card">
+            <h1><span class="heart">❤️</span> Hola mami linda <span class="heart">❤️</span></h1>
+            
+            <div class="message">
+                <p>Cada momento a tu lado es especial,</p>
+                <p>tu sonrisa ilumina mis días</p>
+                <p>y tu compañía es mi mayor felicidad.</p>
+                <p class="question">¿Will you be my Valentine?</p>
+            </div>
+            
+            <!-- AQUÍ VA TU FOTO -->
+            <div class="photo-container">
+                <img src="1.jpg" alt="Nuestra foto especial">
+            </div>
+            <p class="photo-caption">Cada dia mas enamorado de ti mi reina 💖</p>
+            
+            <div class="buttons">
+                <button id="yesBtn" class="btn yes-btn">
+                    <i class="fas fa-check-circle"></i> SÍ 😈 
+                </button>
+                <button id="noBtn" class="btn no-btn">
+                    <i class="fas fa-times-circle"></i> No :C 
+                </button>
+            </div>
+            
+            <div class="response-message" id="responseMessage">
+                <!-- Aquí aparecerá la respuesta -->
+            </div>
+            
+            <div class="footer">
+                <p>"De tu futuro marido <span class="heart">❤️</span> y el amor de tu vida"</p>
+                <p>"Pa ve pa dentro 😝 "</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const responseMessage = document.getElementById('responseMessage');
+            
+            // Crear corazones flotantes
+            function createHearts() {
+                for (let i = 0; i < 15; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = Math.random() * 100 + 'vh';
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    document.body.appendChild(heart);
+                    
+                    // Animación
+                    const duration = Math.random() * 5 + 5;
+                    heart.animate([
+                        { transform: 'translateY(0px)', opacity: 0.7 },
+                        { transform: 'translateY(-100vh)', opacity: 0 }
+                    ], {
+                        duration: duration * 1000,
+                        easing: 'linear'
+                    });
+                    
+                    // Eliminar después de animar
+                    setTimeout(() => heart.remove(), duration * 1000);
+                }
+            }
+            
+            // Crear corazones cada 3 segundos
+            setInterval(createHearts, 3000);
+            
+            // Respuestas para "No"
+            const noResponses = [
+                "¿Seguro? ¡Piénsalo de nuevo!",
+                "Vamos, ¡di que sí!",
+                "¡Mi corazón está llorando! 😢",
+                "¡Te daré chocolate!",
+                "¡Por favor, reconsidera!",
+                "¡Esperaré hasta que cambies de opinión!",
+                "¡Mi corazón está roto! 💔",
+                "¡Dime que sí, por favor!"
+            ];
+            
+            let noClickCount = 0;
+            let yesClicked = false;
+
+            // Función para crear imágenes en zigzag
+            function createZigzagImages() {
+                // ARRAY DE IMÁGENES - CAMBIA ESTAS URLS POR LAS TUS
+                const imagesLeft = [
+                    "2.jpg",    // Imagen 1 izquierda
+                    "3.jpg",    // Imagen 2 izquierda
+                    "4.jpg",    // Imagen 3 izquierda
+                    "5.jpg"     // Imagen 4 izquierda
+                ];
+                
+                const imagesRight = [
+                    "6.jpg",    // Imagen 1 derecha
+                    "7.jpg",    // Imagen 2 derecha
+                    "8.jpg",    // Imagen 3 derecha
+                    "9.jpg"     // Imagen 4 derecha
+                ];
+
+                // Posiciones en zigzag (alturas relativas)
+                const positions = [10, 30, 50, 70]; // Porcentajes de la altura de la pantalla
+                
+                // Crear imágenes del lado izquierdo
+                imagesLeft.forEach((imgSrc, index) => {
+                    setTimeout(() => {
+                        const img = document.createElement('img');
+                        img.className = 'side-image';
+                        img.src = imgSrc;
+                        img.alt = `Recuerdo especial ${index + 1}`;
+                        
+                        // Posición izquierda en zigzag
+                        img.style.left = '20px';
+                        img.style.top = `${positions[index]}%`;
+                        
+                        document.body.appendChild(img);
+                        
+                        // Mostrar con animación
+                        setTimeout(() => {
+                            img.classList.add('show');
+                        }, 100);
+                        
+                        // Agregar animación flotante
+                        img.style.animation = `floatSide 4s ease-in-out ${index * 0.5}s infinite`;
+                        
+                    }, index * 300); // Retraso entre cada imagen
+                });
+                
+                // Crear imágenes del lado derecho
+                imagesRight.forEach((imgSrc, index) => {
+                    setTimeout(() => {
+                        const img = document.createElement('img');
+                        img.className = 'side-image';
+                        img.src = imgSrc;
+                        img.alt = `Recuerdo especial ${index + 5}`;
+                        
+                        // Posición derecha en zigzag (opuesta a izquierda)
+                        img.style.right = '20px';
+                        img.style.top = `${positions[(index + 1) % 4]}%`; // Patrón alternado
+                        
+                        document.body.appendChild(img);
+                        
+                        // Mostrar con animación
+                        setTimeout(() => {
+                            img.classList.add('show');
+                        }, 100);
+                        
+                        // Agregar animación flotante
+                        img.style.animation = `floatSide 4s ease-in-out ${index * 0.5 + 0.2}s infinite`;
+                        
+                    }, (index + 4) * 300); // Retraso después de las izquierdas
+                });
+
+                // Agregar animación CSS para flotar
+                if (!document.querySelector('#floatAnimation')) {
+                    const style = document.createElement('style');
+                    style.id = 'floatAnimation';
+                    style.textContent = `
+                        @keyframes floatSide {
+                            0%, 100% { transform: translateY(0px) rotate(0deg); }
+                            50% { transform: translateY(-15px) rotate(2deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            // Botón SÍ
+            yesBtn.addEventListener('click', function() {
+                if (yesClicked) return;
+                
+                yesClicked = true;
+                responseMessage.innerHTML = '¡SÍ! ¡ME HAS HECHO LA PERSONA MÁS FELIZ! 💖🎉';
+                
+                // Efectos especiales
+                document.title = "¡ELLA DIJO QUE SÍ! 💘";
+                
+                // Crear imágenes en zigzag
+                createZigzagImages();
+                
+                // Lluvia de corazones
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.innerHTML = '❤️';
+                        heart.style.position = 'fixed';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.top = '-50px';
+                        heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                        heart.style.color = '#ff6b8b';
+                        heart.style.zIndex = '9999';
+                        heart.style.pointerEvents = 'none';
+                        document.body.appendChild(heart);
+                        
+                        const duration = Math.random() * 2 + 2;
+                        heart.animate([
+                            { transform: 'translateY(0px)', opacity: 1 },
+                            { transform: 'translateY(100vh)', opacity: 0 }
+                        ], {
+                            duration: duration * 1000,
+                            easing: 'linear'
+                        });
+                        
+                        setTimeout(() => heart.remove(), duration * 1000);
+                    }, i * 100);
+                }
+                
+                // Cambiar botón No
+                noBtn.innerHTML = '<i class="fas fa-heart"></i> ¡Ya dijiste que SÍ mi loca ya no hay retorno😼😼😼😼😼!';
+                noBtn.style.background = 'linear-gradient(45deg, #9C27B0, #E91E63)';
+                noBtn.onclick = null;
+                
+                // Mensaje adicional
+                setTimeout(() => {
+                    const extra = document.createElement('div');
+                    extra.innerHTML = '¡Otro año mas en San Valentin mi chula 😻 ! 🍫🌹';
+                    extra.style.color = '#9C27B0';
+                    extra.style.fontSize = '1.5rem';
+                    extra.style.marginTop = '10px';
+                    responseMessage.parentNode.insertBefore(extra, responseMessage.nextSibling);
+                }, 1000);
+            });
+            
+            // Botón NO (se mueve)
+            noBtn.addEventListener('mouseover', function() {
+                if (yesClicked) return;
+                
+                // Mover botón
+                const maxX = window.innerWidth - this.offsetWidth - 20;
+                const maxY = window.innerHeight - this.offsetHeight - 20;
+                
+                const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+                
+                this.style.position = 'fixed';
+                this.style.left = randomX + 'px';
+                this.style.top = randomY + 'px';
+            });
+            
+            // BOTÓN NO - AHORA CAMBIA LAS FRASES EN EL BOTÓN
+            noBtn.addEventListener('click', function(e) {
+                if (yesClicked) return;
+                
+                e.preventDefault();
+                noClickCount++;
+                
+                // Cambiar mensaje EN EL BOTÓN y en el responseMessage
+                if (noClickCount <= noResponses.length) {
+                    const respuesta = noResponses[noClickCount - 1];
+                    noBtn.innerHTML = `<i class="fas fa-times-circle"></i> ${respuesta}`;
+                    responseMessage.innerHTML = respuesta;
+                } else {
+                    noBtn.innerHTML = '<i class="fas fa-times-circle"></i> ¡Sigue intentando!';
+                    responseMessage.innerHTML = "¡Voy a seguir insistiendo! 💘";
+                }
+                
+                // Hacer botón más pequeño
+                const currentWidth = this.offsetWidth;
+                const currentHeight = this.offsetHeight;
+                this.style.width = (currentWidth * 0.9) + 'px';
+                this.style.height = (currentHeight * 0.9) + 'px';
+                
+                // Si hace clic 8 veces, forzar SÍ
+                if (noClickCount >= 8) {
+                    setTimeout(() => {
+                        alert("¡Después de tantos intentos, TOMO ESTO COMO UN SÍ! 😜");
+                        yesBtn.click();
+                    }, 500);
+                }
+            });
+            
+            // Iniciar corazones flotantes
+            createHearts();
+        });
+    </script>
+</body>
+</html>
