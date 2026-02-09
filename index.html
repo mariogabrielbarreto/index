@@ -199,6 +199,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- 🎵 AUDIO (pon el archivo love.mp3 en la raíz junto a index.html) -->
+    <audio id="loveMusic" preload="auto">
+        <source src="love.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
     <div class="container">
         <div class="valentine-card">
             <h1><span class="heart">❤️</span> Hola mami linda <span class="heart">❤️</span></h1>
@@ -241,6 +248,9 @@
             const yesBtn = document.getElementById('yesBtn');
             const noBtn = document.getElementById('noBtn');
             const responseMessage = document.getElementById('responseMessage');
+
+            // 🎵 Referencia a la música
+            const loveMusic = document.getElementById('loveMusic');
             
             // Crear corazones flotantes
             function createHearts() {
@@ -288,75 +298,41 @@
 
             // Función para crear imágenes en zigzag
             function createZigzagImages() {
-                // ARRAY DE IMÁGENES - CAMBIA ESTAS URLS POR LAS TUS
-                const imagesLeft = [
-                    "2.jpg",    // Imagen 1 izquierda
-                    "3.jpg",    // Imagen 2 izquierda
-                    "4.jpg",    // Imagen 3 izquierda
-                    "5.jpg"     // Imagen 4 izquierda
-                ];
-                
-                const imagesRight = [
-                    "6.jpg",    // Imagen 1 derecha
-                    "7.jpg",    // Imagen 2 derecha
-                    "8.jpg",    // Imagen 3 derecha
-                    "9.jpg"     // Imagen 4 derecha
-                ];
+                const imagesLeft = ["2.jpg","3.jpg","4.jpg","5.jpg"];
+                const imagesRight = ["6.jpg","7.jpg","8.jpg","9.jpg"];
 
-                // Posiciones en zigzag (alturas relativas)
-                const positions = [10, 30, 50, 70]; // Porcentajes de la altura de la pantalla
+                const positions = [10, 30, 50, 70];
                 
-                // Crear imágenes del lado izquierdo
                 imagesLeft.forEach((imgSrc, index) => {
                     setTimeout(() => {
                         const img = document.createElement('img');
                         img.className = 'side-image';
                         img.src = imgSrc;
                         img.alt = `Recuerdo especial ${index + 1}`;
-                        
-                        // Posición izquierda en zigzag
                         img.style.left = '20px';
                         img.style.top = `${positions[index]}%`;
-                        
                         document.body.appendChild(img);
-                        
-                        // Mostrar con animación
-                        setTimeout(() => {
-                            img.classList.add('show');
-                        }, 100);
-                        
-                        // Agregar animación flotante
+
+                        setTimeout(() => img.classList.add('show'), 100);
                         img.style.animation = `floatSide 4s ease-in-out ${index * 0.5}s infinite`;
-                        
-                    }, index * 300); // Retraso entre cada imagen
+                    }, index * 300);
                 });
                 
-                // Crear imágenes del lado derecho
                 imagesRight.forEach((imgSrc, index) => {
                     setTimeout(() => {
                         const img = document.createElement('img');
                         img.className = 'side-image';
                         img.src = imgSrc;
                         img.alt = `Recuerdo especial ${index + 5}`;
-                        
-                        // Posición derecha en zigzag (opuesta a izquierda)
                         img.style.right = '20px';
-                        img.style.top = `${positions[(index + 1) % 4]}%`; // Patrón alternado
-                        
+                        img.style.top = `${positions[(index + 1) % 4]}%`;
                         document.body.appendChild(img);
-                        
-                        // Mostrar con animación
-                        setTimeout(() => {
-                            img.classList.add('show');
-                        }, 100);
-                        
-                        // Agregar animación flotante
+
+                        setTimeout(() => img.classList.add('show'), 100);
                         img.style.animation = `floatSide 4s ease-in-out ${index * 0.5 + 0.2}s infinite`;
-                        
-                    }, (index + 4) * 300); // Retraso después de las izquierdas
+                    }, (index + 4) * 300);
                 });
 
-                // Agregar animación CSS para flotar
                 if (!document.querySelector('#floatAnimation')) {
                     const style = document.createElement('style');
                     style.id = 'floatAnimation';
@@ -373,17 +349,18 @@
             // Botón SÍ
             yesBtn.addEventListener('click', function() {
                 if (yesClicked) return;
-                
+
+                // 🎵 Reproducir música al presionar SÍ
+                loveMusic.volume = 0.6; // 0.0 a 1.0
+                loveMusic.currentTime = 0;
+                loveMusic.play();
+
                 yesClicked = true;
                 responseMessage.innerHTML = '¡SÍ! ¡ME HAS HECHO LA PERSONA MÁS FELIZ! 💖🎉';
                 
-                // Efectos especiales
                 document.title = "¡ELLA DIJO QUE SÍ! 💘";
-                
-                // Crear imágenes en zigzag
                 createZigzagImages();
                 
-                // Lluvia de corazones
                 for (let i = 0; i < 50; i++) {
                     setTimeout(() => {
                         const heart = document.createElement('div');
@@ -410,12 +387,10 @@
                     }, i * 100);
                 }
                 
-                // Cambiar botón No
                 noBtn.innerHTML = '<i class="fas fa-heart"></i> ¡Ya dijiste que SÍ mi loca ya no hay retorno😼😼😼😼😼!';
                 noBtn.style.background = 'linear-gradient(45deg, #9C27B0, #E91E63)';
                 noBtn.onclick = null;
                 
-                // Mensaje adicional
                 setTimeout(() => {
                     const extra = document.createElement('div');
                     extra.innerHTML = '¡Otro año mas en San Valentin mi chula 😻 ! 🍫🌹';
@@ -430,7 +405,6 @@
             noBtn.addEventListener('mouseover', function() {
                 if (yesClicked) return;
                 
-                // Mover botón
                 const maxX = window.innerWidth - this.offsetWidth - 20;
                 const maxY = window.innerHeight - this.offsetHeight - 20;
                 
@@ -442,14 +416,12 @@
                 this.style.top = randomY + 'px';
             });
             
-            // BOTÓN NO - AHORA CAMBIA LAS FRASES EN EL BOTÓN
             noBtn.addEventListener('click', function(e) {
                 if (yesClicked) return;
                 
                 e.preventDefault();
                 noClickCount++;
                 
-                // Cambiar mensaje EN EL BOTÓN y en el responseMessage
                 if (noClickCount <= noResponses.length) {
                     const respuesta = noResponses[noClickCount - 1];
                     noBtn.innerHTML = `<i class="fas fa-times-circle"></i> ${respuesta}`;
@@ -459,13 +431,11 @@
                     responseMessage.innerHTML = "¡Voy a seguir insistiendo! 💘";
                 }
                 
-                // Hacer botón más pequeño
                 const currentWidth = this.offsetWidth;
                 const currentHeight = this.offsetHeight;
                 this.style.width = (currentWidth * 0.9) + 'px';
                 this.style.height = (currentHeight * 0.9) + 'px';
                 
-                // Si hace clic 8 veces, forzar SÍ
                 if (noClickCount >= 8) {
                     setTimeout(() => {
                         alert("¡Después de tantos intentos, TOMO ESTO COMO UN SÍ! 😜");
@@ -474,7 +444,6 @@
                 }
             });
             
-            // Iniciar corazones flotantes
             createHearts();
         });
     </script>
